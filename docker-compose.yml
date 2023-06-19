@@ -1,0 +1,26 @@
+volumes:
+  mongo_db:
+services:
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - mongo_db:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: leo
+      MONGO_INITDB_ROOT_PASSWORD: leo
+  app:
+    container_name: aplicacao
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    volumes:
+      - ./:/app
+  
